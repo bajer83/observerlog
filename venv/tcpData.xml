@@ -1,7 +1,7 @@
 <tcpdata>
-	<feather>-227</feather>
-	<depth>222m</depth>
-	<wind>220</wind>
-	<line_name>Test222 Line Name</line_name>
-	<line_direction>222</line_direction>
+	<feather>0.00</feather>
+	<depth>10.4m</depth>
+	<wind>8.3kn</wind>
+	<line_name>None</line_name>
+	<line_direction>195T</line_direction>
 </tcpdata>

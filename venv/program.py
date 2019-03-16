@@ -167,12 +167,15 @@ class mywindow(QtWidgets.QMainWindow):
         self.ui.dir_label.setText(parsed_tcp_data_1.direction)
 
     def run_server(self, serversocket):
+        client_socket, addr = serversocket.accept()  # blocking funtion which awaits data
+
         while not self.stop_event_for_TCP.is_set():
             print('inside server : {}'.format(serversocket))
-            client_socket, addr = serversocket.accept()  # blocking funtion which awaits data
+
             print('Got a connection from {client}'.format(client=str(addr)))
             self.ui.pushButtonTCP.setText("Disconnect")
-            msg = client_socket.recv(1024)
+            msglist = client_socket.recv(1024).strip().splitlines()
+            msg = msglist[-1]
             # self.write_TCP_data(msg.decode('ascii'))
             # print('received: {}'.format(msg.decode('ascii')))
 
