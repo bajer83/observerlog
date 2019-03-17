@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>522</width>
-    <height>590</height>
+    <height>457</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -35,10 +35,10 @@
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>20</x>
       <y>10</y>
       <width>491</width>
-      <height>321</height>
+      <height>201</height>
      </rect>
     </property>
     <property name="title">
@@ -50,7 +50,7 @@
        <x>50</x>
        <y>50</y>
        <width>391</width>
-       <height>221</height>
+       <height>121</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
@@ -95,20 +95,10 @@
        </widget>
       </item>
       <item>
-       <widget class="QScrollArea" name="scrollArea">
-        <property name="widgetResizable">
-         <bool>true</bool>
+       <widget class="QLabel" name="scrollLabel">
+        <property name="text">
+         <string>No data</string>
         </property>
-        <widget class="QWidget" name="scrollAreaWidgetContents">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>387</width>
-           <height>160</height>
-          </rect>
-         </property>
-        </widget>
        </widget>
       </item>
      </layout>
@@ -117,8 +107,8 @@
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>350</y>
+      <x>20</x>
+      <y>220</y>
       <width>491</width>
       <height>196</height>
      </rect>
@@ -311,10 +301,33 @@
     <property name="title">
      <string>About</string>
     </property>
+    <addaction name="actionTCP_message_format"/>
    </widget>
    <addaction name="menuAbout"/>
   </widget>
+  <action name="actionTCP_message_format">
+   <property name="text">
+    <string>TCP message format...</string>
+   </property>
+  </action>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>menubar</sender>
+   <signal>triggered(QAction*)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>21</x>
+     <y>8</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-265</x>
+     <y>-61</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
