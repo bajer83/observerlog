@@ -174,7 +174,7 @@ class mywindow(QtWidgets.QMainWindow):
 
             print('Got a connection from {client}'.format(client=str(addr)))
             self.ui.pushButtonTCP.setText("Disconnect")
-            msglist = client_socket.recv(1024).strip().splitlines()
+            msglist = client_socket.recv(512).strip().splitlines()
             msg = msglist[-1]
             # self.write_TCP_data(msg.decode('ascii'))
             # print('received: {}'.format(msg.decode('ascii')))
