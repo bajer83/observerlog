@@ -28,7 +28,7 @@ class mywindow(QtWidgets.QMainWindow):
         self.ui.pushButton.clicked.connect(self.buttonClicked)
         self.ui.pushButtonTCP.clicked.connect(self.create_TCP_server)
 
-        # TODO: Add a check for number of COM ports detected. If none the program will currently crash.
+        # TODO: Add a check for number of COM ports detected. If none the program will currently crash.ddd
         self.ui.comboBox.addItems(self.read_available_com_ports())  # creating and initilising Combobox
 
         self.ser = serial.Serial()
