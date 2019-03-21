@@ -28,7 +28,7 @@ class mywindow(QtWidgets.QMainWindow):
         self.ui.pushButton.clicked.connect(self.buttonClicked)
         self.ui.pushButtonTCP.clicked.connect(self.create_TCP_server)
 
-        # TODO: Add a check for number of COM ports detected. If none the program will currently crash.ddd
+        # TODO: Add a check for number of COM ports detected. If none the program will currently crash
         self.ui.comboBox.addItems(self.read_available_com_ports())  # creating and initilising Combobox
 
         self.ser = serial.Serial()
@@ -54,6 +54,8 @@ class mywindow(QtWidgets.QMainWindow):
         # Creates a list with available COM ports using list comprehension
         return [comport.device for comport in serial.tools.list_ports.comports()]
 
+    # This is the function that initiates connection to the serial COM Port. It checks if the COM port
+    # isn't already opened and then starts a new thread
     def connect(self, stop_event):
 
         if not self.ser.is_open:
@@ -71,12 +73,15 @@ class mywindow(QtWidgets.QMainWindow):
             self.ser.close()
             self.ui.pushButton.setText('Connect')
 
+    # Run in a seperate thread. Continuesly reads data from the COM port and updates the label. Is terminates if the stopEvent
+    # is trigggerd by the Disconnect button
     def readSerialData(self, ser, stopEvent):
 
         while not stopEvent.is_set():
-            data = ser.readline().decode('utf-8')
+            print("Inside the reading function")
+            data = ser.read_until(b'\r')            #crucial to pass as a byte string and not a string itself
             print(data)
-            parsed_depths = self.parse_bird_data(data)
+            parsed_depths = self.parse_bird_data(data.decode('utf-8'))   #convert to normal string before passing to parse_date
             self.write_to_file(parsed_depths)
 
             self.updateScrollArea(data)
@@ -101,7 +106,8 @@ class mywindow(QtWidgets.QMainWindow):
                     '[]'))  # convert dictionary values to list and subseqently to string in order to use strip function to remove brackets
 
     def updateScrollArea(self, text):
-        self.ui.scrollLabel.setText(text + str(time.time()))
+
+        self.ui.scrollLabel.setText(text.decode('utf-8'))
 
         # self.ui.scrollArea.show()
 
