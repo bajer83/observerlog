@@ -20,10 +20,10 @@ class mywindow(QtWidgets.QMainWindow):
         super(mywindow, self).__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.scrollLabel = QLabel()
-        self.scrollLabel.setText('No data')
-        self.ui.scrollArea.setWidgetResizable(True)
-        self.ui.scrollArea.setWidget(self.scrollLabel)
+
+        # self.scrollLabel.setText('No data')
+        # self.ui.scrollArea.setWidgetResizable(True)
+        # self.ui.scrollArea.setWidget(self.scrollLabel)
 
         self.ui.pushButton.clicked.connect(self.buttonClicked)
         self.ui.pushButtonTCP.clicked.connect(self.create_TCP_server)
@@ -35,15 +35,16 @@ class mywindow(QtWidgets.QMainWindow):
         self.ser.baudrate = 9600
 
         self.ui.tCPServerIPLineEdit.setText(socket.gethostbyname(socket.getfqdn()))
+        self.ui.tCPServerPortLineEdit.setText("7777")
 
         self.stopEvent = threading.Event()  # an object that will act as a flag to stop while loop for reading serial data
         self.stop_event_for_TCP = threading.Event()  # as above just for TCP server button
 
-    #   Signals
+        #   Signals
 
         self.ui.menubar.triggered.connect(self.menu_about_clicked)
 
-    def menu_about_clicked(self,q):
+    def menu_about_clicked(self, q):
         print("Clicked menue About")
 
     def buttonClicked(self):
@@ -55,7 +56,7 @@ class mywindow(QtWidgets.QMainWindow):
 
     def connect(self, stop_event):
 
-        if (not self.ser.is_open):
+        if not self.ser.is_open:
             self.ser.port = self.ui.comboBox.itemText(0)
             self.ser.open()
             self.ui.pushButton.setText('Disconnect')
@@ -100,9 +101,9 @@ class mywindow(QtWidgets.QMainWindow):
                     '[]'))  # convert dictionary values to list and subseqently to string in order to use strip function to remove brackets
 
     def updateScrollArea(self, text):
-        self.scrollLabel.setText(text + str(time.time()))
+        self.ui.scrollLabel.setText(text + str(time.time()))
 
-        self.ui.scrollArea.show()
+        # self.ui.scrollArea.show()
 
     def create_TCP_server(self):
 
@@ -140,7 +141,6 @@ class mywindow(QtWidgets.QMainWindow):
             root.find('depth').text = data.depth
 
             tree.write('tcpData.xml')
-
 
     def clear_all_labels(self):
         default_text = "N/A"
