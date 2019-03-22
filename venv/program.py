@@ -110,8 +110,8 @@ class mywindow(QtWidgets.QMainWindow):
     def updateScrollArea(self, text, parsed_data):
 
         self.ui.scrollLabel.setText(text.decode('utf-8'))
-
-        self.ui.raw_string_label.setText(parsed_data)
+        depths_only = [i for i in parsed_data.values()]   #list comprehenison to extract values only
+        self.ui.raw_string_label.setText(str(depths_only))
 
     def create_TCP_server(self):
 
