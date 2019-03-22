@@ -42,10 +42,12 @@ class mywindow(QtWidgets.QMainWindow):
 
         #   Signals
 
-        self.ui.menubar.triggered.connect(self.menu_about_clicked)
+
+
+        self.ui.actionTCP_message_format.triggered.connect(self.menu_about_clicked)
 
     def menu_about_clicked(self, q):
-        print("Clicked menue About")
+        QMessageBox.information(self, 'Help file', "Accepted string format for TCP: feather_angle,water_depth,wind_speed,direction,Line name", QMessageBox.Ok)
 
     def buttonClicked(self):
         self.connect(self.stopEvent)
@@ -84,7 +86,7 @@ class mywindow(QtWidgets.QMainWindow):
             parsed_depths = self.parse_bird_data(data.decode('utf-8'))   #convert to normal string before passing to parse_date
             self.write_to_file(parsed_depths)
 
-            self.updateScrollArea(data)
+            self.updateScrollArea(data, parsed_depths)
         self.stopEvent.clear()  # clears the Flag for the Event object
 
     def parse_bird_data(self, raw_data):
@@ -105,15 +107,17 @@ class mywindow(QtWidgets.QMainWindow):
                 f.write(str(list(data_to_save.values())).strip(
                     '[]'))  # convert dictionary values to list and subseqently to string in order to use strip function to remove brackets
 
-    def updateScrollArea(self, text):
+    def updateScrollArea(self, text, parsed_data):
 
         self.ui.scrollLabel.setText(text.decode('utf-8'))
 
-        # self.ui.scrollArea.show()
+        self.ui.raw_string_label.setText(parsed_data)
 
     def create_TCP_server(self):
 
         try:
+            #TODO Allow for the cancellation of the waiting for the incoming connection
+            self.ui.pushButtonTCP.setEnabled(False)
             serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
             host = self.ui.tCPServerIPLineEdit.text()
@@ -129,7 +133,7 @@ class mywindow(QtWidgets.QMainWindow):
         except OSError as err:
             self.stop_event_for_TCP.set()  # informs the accepting thread that it should terminate
             serversocket.close()
-            print(f" Socket was opened: {err.strerror}. Socket is now closed.")
+            print(f" Socket is already opened: {err.strerror}. Socket is now closed.")
 
     def write_TCP_data(self, data):
         if len(data) > 0:
