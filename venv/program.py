@@ -41,8 +41,7 @@ class mywindow(QtWidgets.QMainWindow):
         self.stop_event_for_TCP = threading.Event()  # as above just for TCP server button
 
         #   Signals
-
-
+        self.ui.scrollLabel.setText("No data")
 
         self.ui.actionTCP_message_format.triggered.connect(self.menu_about_clicked)
 
@@ -117,7 +116,8 @@ class mywindow(QtWidgets.QMainWindow):
 
         try:
             #TODO Allow for the cancellation of the waiting for the incoming connection
-            self.ui.pushButtonTCP.setEnabled(False)
+            #self.ui.pushButtonTCP.setEnabled(False)
+            self.ui.pushButtonTCP.setText("Waiting")
             serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
             host = self.ui.tCPServerIPLineEdit.text()
