@@ -41,7 +41,7 @@ class mywindow(QtWidgets.QMainWindow):
         self.stop_event_for_TCP = threading.Event()  # as above just for TCP server button
 
         #   Signals
-        self.ui.scrollLabel.setText("No data")
+
 
         self.ui.actionTCP_message_format.triggered.connect(self.menu_about_clicked)
 
@@ -115,9 +115,11 @@ class mywindow(QtWidgets.QMainWindow):
 
     def updateScrollArea(self, text, parsed_data):
 
-        self.ui.scrollLabel.setText(text.decode('utf-8'))
+        self.ui.scrollLabel.append(text.decode('utf-8'))
+        # self.ui.scrollLabel.setText(text.decode('utf-8'))
         depths_only = [i for i in parsed_data.values()]   #list comprehenison to extract values only
         self.ui.raw_string_label.setText(str(depths_only))
+
 
     def create_TCP_server(self):
 
@@ -166,6 +168,7 @@ class mywindow(QtWidgets.QMainWindow):
         self.ui.dir_label.setText(default_text)
         self.ui.line_name_label.setText(default_text)
         self.ui.wind_speed_label.setText(default_text)
+
 
     def parse_tcp_data_update_lables(self, data=str):
         # This implementation relies on fact that only 5 data fields should be received from the TCP source (NG) i.e.
