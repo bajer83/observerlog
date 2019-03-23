@@ -46,7 +46,14 @@ class mywindow(QtWidgets.QMainWindow):
         self.ui.actionTCP_message_format.triggered.connect(self.menu_about_clicked)
 
     def menu_about_clicked(self, q):
-        QMessageBox.information(self, 'Help file', "Accepted string format for TCP: feather_angle,water_depth,wind_speed,direction,Line name", QMessageBox.Ok)
+        QMessageBox.information(self, 'Help file', "Accepted string format for TCP connections:\n\nfeather_angle,water_depth,wind_speed,direction,Line name\n\n"
+                                                   "Example of the message send by TCP Client Config Out solution in NG:\n\n"
+                                                   "-2.4,93.4m,22.0kn,219T,TP19-001\n\n"                                                  
+                                                   "Output format: CSV with no Checksum\n\n"
+                                                   "----------------------------------------------------------------------\n"
+                                                   "Info: In the NG Config Out solution for TCP client use IP address for the PC which runs this program (Logging PC)\n\n"
+                                                   "IP address inside the NG solution for Config Out and the IP typed in this program must match as well as port numbers\n\n"
+                                                   "Port number 7777 is a safe choice", QMessageBox.Ok)
 
     def buttonClicked(self):
         self.connect(self.stopEvent)
