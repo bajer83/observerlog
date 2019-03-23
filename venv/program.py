@@ -42,18 +42,18 @@ class mywindow(QtWidgets.QMainWindow):
 
         #   Signals
 
-
         self.ui.actionTCP_message_format.triggered.connect(self.menu_about_clicked)
 
     def menu_about_clicked(self, q):
-        QMessageBox.information(self, 'Help file', "Accepted string format for TCP connections:\n\nfeather_angle,water_depth,wind_speed,direction,Line name\n\n"
-                                                   "Example of the message send by TCP Client Config Out solution in NG:\n\n"
-                                                   "-2.4,93.4m,22.0kn,219T,TP19-001\n\n"                                                  
-                                                   "Output format: CSV with no Checksum\n\n"
-                                                   "----------------------------------------------------------------------\n"
-                                                   "Info: In the NG Config Out solution for TCP client use IP address for the PC which runs this program (Logging PC)\n\n"
-                                                   "IP address inside the NG solution for Config Out and the IP typed in this program must match as well as port numbers\n\n"
-                                                   "Port number 7777 is a safe choice", QMessageBox.Ok)
+        QMessageBox.information(self, 'Help file',
+                                "Accepted string format for TCP connections:\n\nfeather_angle,water_depth,wind_speed,direction,Line name\n\n"
+                                "Example of the message send by TCP Client Config Out solution in NG:\n\n"
+                                "-2.4,93.4m,22.0kn,219T,TP19-001\n\n"
+                                "Output format: CSV with no Checksum\n\n"
+                                "----------------------------------------------------------------------\n"
+                                "Info: In the NG Config Out solution for TCP client use IP address for the PC which runs this program (Logging PC)\n\n"
+                                "IP address inside the NG solution for Config Out and the IP typed in this program must match as well as port numbers\n\n"
+                                "Port number 7777 is a safe choice", QMessageBox.Ok)
 
     def buttonClicked(self):
         self.connect(self.stopEvent)
@@ -67,7 +67,9 @@ class mywindow(QtWidgets.QMainWindow):
     def connect(self, stop_event):
 
         if not self.ser.is_open:
-
+            # TODO Resolve the problem when program is hanging if the other than first COM port on the list is used
+            # For example the device is connected to COM2 but selecting COM2 in the program doesn't work
+            # Only if the device is connected physically to the same COM port as the first one in the combobox list
             self.ser.port = self.ui.comboBox.currentText()
             self.ser.open()
             self.ui.pushButton.setText('Disconnect')
@@ -88,9 +90,10 @@ class mywindow(QtWidgets.QMainWindow):
 
         while not stopEvent.is_set():
             print("Inside the reading function")
-            data = ser.read_until(b'\r')            #crucial to pass as a byte string and not a string itself
+            data = ser.read_until(b'\r')  # crucial to pass as a byte string and not a string itself
             print(data)
-            parsed_depths = self.parse_bird_data(data.decode('utf-8'))   #convert to normal string before passing to parse_date
+            parsed_depths = self.parse_bird_data(
+                data.decode('utf-8'))  # convert to normal string before passing to parse_date
             self.write_to_file(parsed_depths)
 
             self.updateScrollArea(data, parsed_depths)
@@ -118,15 +121,14 @@ class mywindow(QtWidgets.QMainWindow):
 
         self.ui.scrollLabel.append(text.decode('utf-8'))
         # self.ui.scrollLabel.setText(text.decode('utf-8'))
-        depths_only = [i for i in parsed_data.values()]   #list comprehenison to extract values only
+        depths_only = [i for i in parsed_data.values()]  # list comprehenison to extract values only
         self.ui.raw_string_label.setText(str(depths_only))
-
 
     def create_TCP_server(self):
 
         try:
-            #TODO Allow for the cancellation of the waiting for the incoming connection
-            #self.ui.pushButtonTCP.setEnabled(False)
+            # TODO Allow for the cancellation of the waiting for the incoming connection
+            # self.ui.pushButtonTCP.setEnabled(False)
             self.ui.pushButtonTCP.setText("Waiting")
             serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -169,7 +171,6 @@ class mywindow(QtWidgets.QMainWindow):
         self.ui.dir_label.setText(default_text)
         self.ui.line_name_label.setText(default_text)
         self.ui.wind_speed_label.setText(default_text)
-
 
     def parse_tcp_data_update_lables(self, data=str):
         # This implementation relies on fact that only 5 data fields should be received from the TCP source (NG) i.e.
