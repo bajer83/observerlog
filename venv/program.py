@@ -67,7 +67,8 @@ class mywindow(QtWidgets.QMainWindow):
     def connect(self, stop_event):
 
         if not self.ser.is_open:
-            self.ser.port = self.ui.comboBox.itemText(0)
+
+            self.ser.port = self.ui.comboBox.currentText()
             self.ser.open()
             self.ui.pushButton.setText('Disconnect')
 
@@ -111,7 +112,7 @@ class mywindow(QtWidgets.QMainWindow):
         if len(data_to_save) > 0:
             with open(os.path.join(os.path.abspath('.'), 'digiBirdsDepthsLog.txt'), 'w') as f:
                 f.write(str(list(data_to_save.values())).strip(
-                    '[]'))  # convert dictionary values to list and subseqently to string in order to use strip function to remove brackets
+                    '[]') + ',')  # convert dictionary values to list and subseqently to string in order to use strip function to remove brackets
 
     def updateScrollArea(self, text, parsed_data):
 
